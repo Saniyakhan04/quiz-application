@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Application</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-inter">
+    <!-- Message Box -->
+    <div id="message-box" class="hidden fixed top-4 left-1/2 -translate-x-1/2 p-3 rounded-lg shadow-lg z-50 text-center"></div>
+
+    <div class="container mx-auto max-w-5xl p-6">
+        <!-- Start Page -->
+        <div id="start-page" class="page active text-center">
+            <h1 class="text-4xl font-bold text-gray-800 mb-6">Welcome to the Quiz!</h1>
+            <p class="text-lg text-gray-600 mb-8">Please enter your email to start the quiz.</p>
+            <div class="w-full max-w-sm mx-auto">
+                <input type="email" id="email-input" placeholder="your.email@example.com"
+                       class="w-full p-4 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <button id="continue-btn" class="btn btn-primary w-full">Continue</button>
+                <p id="email-error" class="text-red-500 text-sm mt-2 hidden">Please enter a valid email address.</p>
+            </div>
+        </div>
+
+        <!-- Guidelines Page -->
+        <div id="guidelines-page" class="page hidden">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Assessment Guidelines</h2>
+            <div class="bg-white shadow-md p-6 rounded-lg text-gray-700 space-y-4">
+                <p><strong>1. Assessment Overview:</strong></p>
+                <ul class="list-disc list-inside">
+                    <li>Total Questions: 15</li>
+                    <li>Each question carries 1 mark</li>
+                    <li>Duration: 30 Minutes</li>
+                </ul>
+                <p><strong>2. Important Rules & Technical Requirements:</strong></p>
+                <ul class="list-disc list-inside">
+                    <li>Must be completed in a single sitting (timer won’t stop).</li>
+                    <li>Do not close or refresh the browser window during the assessment.</li>
+                    <li>Ensure a stable internet connection.</li>
+                </ul>
+                <p><strong>3. Navigating the Assessment:</strong></p>
+                <ul class="list-disc list-inside">
+                    <li>Use "Previous" and "Next" buttons or click question numbers to navigate.</li>
+                    <li>Your answers are saved automatically as you select them.</li>
+                </ul>
+                <p><strong>4. Submission & Time Limit:</strong></p>
+                <ul class="list-disc list-inside">
+                    <li>The quiz auto-submits when the timer runs out.</li>
+                    <li>You can manually submit anytime using the "Finish" button.</li>
+                </ul>
+                <p><strong>5. Tips:</strong></p>
+                <ul class="list-disc list-inside">
+                    <li>Manage your time effectively.</li>
+                    <li>Review all answers before the timer expires.</li>
+                </ul>
+            </div>
+            <div class="flex space-x-4 mt-6">
+                <button id="back-btn" class="btn btn-secondary">Back</button>
+                <button id="start-quiz-btn" class="btn btn-primary">Start Assessment</button>
+            </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="page hidden flex items-center justify-center h-64">
+            <p class="text-lg font-semibold text-gray-700">Loading questions...</p>
+        </div>
+
+        <!-- Quiz Header -->
+        <header class="w-full flex justify-between items-center py-4 px-6 bg-white border-b border-gray-200 rounded-t-lg">
+            <div class="text-xl font-bold text-gray-700">Quiz</div>
+            <div id="question-nav-grid-header" class="flex space-x-2"></div>
+            <div class="flex items-center space-x-4">
+                <span class="text-gray-600 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l3 3a1 1 0 001.414-1.414L11 9.586V6z" clip-rule="evenodd" />
+                    </svg>
+                    Time Left: <span id="timer" class="font-semibold ml-1">30:00</span>
+                </span>
+            </div>
+        </header>
+
+        <!-- Quiz Page -->
+        <div id="quiz-page" class="page hidden w-full p-6 bg-white rounded-b-lg">
+            <div class="quiz-layout grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Left Column -->
+                <div>
+                    <div class="mb-4 text-gray-700">
+                        <span id="user-email-display" class="font-medium"></span>
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800">Question <span id="current-q-num">1</span></h2>
+                        <span class="text-gray-700 font-medium">Marks: <span id="marks-display">1</span></span>
+                    </div>
+                    <p id="question-text" class="text-lg text-gray-800 mb-4"></p>
+                </div>
+                <!-- Right Column -->
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Answer</h3>
+                    <div id="choices-container" class="flex flex-col"></div>
+                </div>
+            </div>
+            <!-- Navigation Buttons -->
+            <div class="footer-navigation flex justify-between items-center mt-8 pt-4 border-t border-gray-200">
+                <button id="finish-btn" class="btn bg-red-600 text-white hover:bg-red-700">Finish</button>
+                <div class="flex space-x-4">
+                    <button id="prev-btn" class="btn btn-secondary" disabled>Previous</button>
+                    <button id="next-btn" class="btn btn-primary">Next Question</button>
+                    <button id="revisit-btn" class="btn">Mark for Revisit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Page -->
+        <div id="report-page" class="page hidden">
+            <h1 class="text-4xl font-bold text-gray-800 mb-6 text-center">Quiz Report</h1>
+            <div id="report-content" class="w-full"></div>
+            <button id="restart-quiz-btn" class="btn btn-primary mt-8">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Back button logic (to return to Start Page)
+        document.getElementById('back-btn').addEventListener('click', () => {
+            document.getElementById('email-error').classList.add('hidden'); 
+            document.getElementById('email-input').focus();
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.getElementById('start-page').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

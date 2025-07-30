@@ -1,0 +1,234 @@
+/* style.css */
+
+/* Import Google Fonts - Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Base styles for the body and overall container */
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(to right, #a7d9ff, #c3e2ff); /* Light blue gradient background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 1.5rem; /* Rounded corners */
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    padding: 0;
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Page visibility control */
+.page {
+    width: 100%;
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* Button base styles */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 2rem; /* Similar spacing to email input */
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 0.5rem; /* Slightly rounded corners */
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow like inputs */
+    letter-spacing: 0.025em;
+    cursor: pointer;
+    border: none;
+}
+
+/* Primary buttons (Start Quiz, Next Question, Finish) */
+.btn-primary {
+    background-color: #2563eb; /* Blue */
+    color: #ffffff;
+}
+.btn-primary:hover {
+    background-color: #1d4ed8;
+    transform: scale(1.03);
+}
+
+/* Secondary buttons (Previous) */
+.btn-secondary {
+    background-color: #e5e7eb; /* Light gray */
+    color: #374151; /* Darker text */
+}
+.btn-secondary:hover {
+    background-color: #d1d5db;
+    transform: scale(1.03);
+}
+
+/* Custom Radio Button Styles for Choices */
+.choice-label {
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    background-color: #f8fafc;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+}
+.choice-label:hover {
+    background-color: #ebf4ff;
+    border-color: #93c5fd;
+}
+.choice-label input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+    opacity: 0;
+}
+.custom-radio {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    border: 2px solid #9ca3af;
+    flex-shrink: 0;
+    margin-right: 0.75rem;
+    position: relative;
+}
+.choice-label.selected .custom-radio {
+    border-color: #22c55e;
+}
+.choice-label.selected .custom-radio::after {
+    content: '';
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: #22c55e;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.choice-text {
+    font-size: 1.05rem;
+    color: #1f2937;
+}
+.choice-label.selected .choice-text {
+    color: #1e3a8a;
+}
+
+/* Navigation item styles */
+.nav-item {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid #d1d5db;
+    background-color: #f3f4f6;
+    color: #374151;
+    transition: all 0.2s ease-in-out;
+}
+.nav-item:hover {
+    background-color: #e5e7eb;
+}
+.nav-item.visited {
+    background-color: #fecaca;
+    border-color: #f87171;
+    color: #991b1b;
+}
+.nav-item.attempted {
+    background-color: #bbf7d0;
+    border-color: #22c55e;
+    color: #166534;
+}
+.nav-item.current {
+    background-color: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+/* NEW: Re-visit (yellow) state */
+.nav-item.revisit {
+    background-color: #fef9c3;
+    border-color: #fde047;
+    color: #92400e;
+}
+
+/* Header styling */
+header {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    background-color: #e0f2fe;
+}
+
+/* Main quiz content layout */
+.quiz-layout {
+    padding: 2rem;
+}
+
+/* Footer navigation styling */
+.footer-navigation {
+    background-color: #f0f9ff;
+    border-top: 1px solid #e2e8f0;
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+    padding: 1.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .quiz-layout {
+        grid-template-columns: 1fr;
+    }
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+    #question-nav-grid-header {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .footer-navigation {
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+    }
+    .footer-navigation .flex.space-x-4 {
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: space-around;
+    }
+    .footer-navigation .btn {
+        width: 48%;
+    }
+}
+/* Hide quiz page by default */
+#quiz-page {
+  display: none;
+}
